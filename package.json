@@ -1,0 +1,11 @@
+{
+    "name": "clang-tidy",
+    "version": "19.1.1",
+    "keywords": ["clang", "tidy", "clang-tidy", "llvm"],
+    "author": "RedYetiDev <redyetidev@gmail.com>",
+    "license": "MIT",
+    "description": "A JavaScript packaging of clang-tidy",
+    "bin": {
+      "clang-tidy": "src/index.js"
+    }
+  }

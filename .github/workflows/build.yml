@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows, macos, linux]
+        os: [linux, macos, windows]
 
     runs-on: ${{ matrix.os == 'windows' && 'windows-latest' || 'ubuntu-latest' }}
 
@@ -40,7 +40,7 @@ jobs:
           if [ "${{ matrix.os }}" == "macos" ]; then
             cmake -G Ninja \
                 -DCMAKE_BUILD_TYPE=MinSizeRel \
-                -DLLVM_ENABLE_PROJECTS=clang \
+                -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
                 -DLLVM_TARGET_ARCH=x86_64 \
                 -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-apple-darwin \
                 -DCMAKE_OSX_ARCHITECTURES=x86_64 \
@@ -50,7 +50,7 @@ jobs:
                 -DCMAKE_BUILD_TYPE=MinSizeRel \
                 -DLLVM_BUILD_STATIC=true \
                 -DLLVM_ENABLE_ZLIB=no \
-                -DLLVM_ENABLE_PROJECTS=clang \
+                -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
                 ../llvm
           fi
           ninja clang-tidy
@@ -58,5 +58,5 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: clang-format-${{ github.event.inputs.ref }}-${{ matrix.os }}
+          name: clang-tidy-${{ github.event.inputs.ref }}-${{ matrix.os }}
           path: ${{ matrix.os == 'windows' && 'llvm-project/build/bin/clang-tidy.exe' || 'llvm-project/build/bin/clang-tidy' }}
